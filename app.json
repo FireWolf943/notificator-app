@@ -28,6 +28,10 @@
         "projectId": "939f8e54-36fa-4ea3-9bb1-217729cdc1ab"
       }
     },
-    "owner": "firewolf943"
+    "owner": "firewolf943",
+    "plugins": [
+      "expo-font"
+    ],
+    "assetBundlePatterns": ["**/*"]
   }
 }
