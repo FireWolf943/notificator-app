@@ -29,12 +29,14 @@ export default function Timer({ initialTime }: TimerProps) {
   };
 
   return (
-    <View style={{ width: "75%", alignItems: "center" }}>
-      <Text variant="displayLarge">{formatTime(time)}</Text>
+    <View style={{ width: "75%" }}>
+      <Text variant="displayLarge" style={{ alignSelf: "center" }}>
+        {formatTime(time)}
+      </Text>
       <ProgressBar
-        progress={time / initialTime}
-        style={{ width: "100%", height: 10 }}
-      ></ProgressBar>
+        progress={Math.max(0, Math.min(1, time / Math.max(initialTime, 1)))}
+        style={{ height: 5 }}
+      />
     </View>
   );
 }
