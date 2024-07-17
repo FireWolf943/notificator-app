@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, FAB, Switch, Text } from "react-native-paper";
 import Timer from "./timer";
@@ -8,10 +8,23 @@ type homeProps = {};
 export default function Home(props: homeProps) {
   const [isNotificatorActive, setIsNotificatorActive] = useState(true);
   const [isSafetyDisabled, setIsSafetyDisabled] = useState(false);
+  const [resetSignal, setResetSignal] = useState(false);
+
+  useEffect(() => {
+    if (resetSignal) {
+      setInterval(() => {
+        setResetSignal(false);
+      }, 100);
+    }
+  }, [resetSignal]);
 
   return (
     <View style={styles.container}>
-      <Timer initialTime={30} active={isNotificatorActive} />
+      <Timer
+        initialTime={30}
+        active={isNotificatorActive}
+        resetSignal={resetSignal}
+      />
       <View>
         <Text variant="titleLarge">
           Benachrichtigungen für heute deaktivieren:
@@ -42,7 +55,11 @@ export default function Home(props: homeProps) {
       <FAB
         icon={"restart"}
         style={styles.restartFAB}
-        onPress={() => setIsNotificatorActive(true)}
+        onPress={() => {
+          setIsNotificatorActive(true);
+          setResetSignal(true);
+          setIsSafetyDisabled(false);
+        }}
       />
     </View>
   );

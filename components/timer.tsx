@@ -2,9 +2,17 @@ import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { ProgressBar, Text } from "react-native-paper";
 
-type TimerProps = { initialTime: number; active: boolean };
+type TimerProps = {
+  initialTime: number;
+  active: boolean;
+  resetSignal: boolean;
+};
 
-export default function Timer({ initialTime, active }: TimerProps) {
+export default function Timer({
+  initialTime,
+  active,
+  resetSignal,
+}: TimerProps) {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
@@ -27,6 +35,13 @@ export default function Timer({ initialTime, active }: TimerProps) {
     // Reset the time when it reaches 0
     setTime(initialTime);
   }, [time, active]);
+
+  useEffect(() => {
+    if (resetSignal) {
+      setTime(initialTime);
+      resetSignal = false;
+    }
+  }, [resetSignal]);
 
   // Format the time into minutes and seconds
   const formatTime = (time: number) => {
