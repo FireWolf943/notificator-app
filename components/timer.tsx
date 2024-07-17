@@ -2,22 +2,31 @@ import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { ProgressBar, Text } from "react-native-paper";
 
-type TimerProps = { initialTime: number };
+type TimerProps = { initialTime: number; active: boolean };
 
-export default function Timer({ initialTime }: TimerProps) {
+export default function Timer({ initialTime, active }: TimerProps) {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    if (time > 0) {
+    if (!active) {
+      return;
+    }
+
+    if (time >= 0) {
       // Set up the interval to decrease the time every second
       const intervalId = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
 
       // Clear the interval on component unmount or when the countdown finishes
-      return () => clearInterval(intervalId);
+      return () => {
+        clearInterval(intervalId);
+      };
     }
-  }, [time]);
+
+    // Reset the time when it reaches 0
+    setTime(initialTime);
+  }, [time, active]);
 
   // Format the time into minutes and seconds
   const formatTime = (time: number) => {
